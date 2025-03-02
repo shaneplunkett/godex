@@ -30,7 +30,7 @@ func commandHelp(cfg *pokeapi.Config, c *pokecache.Cache) error {
 }
 
 func commandMap(cfg *pokeapi.Config, c *pokecache.Cache) error {
-	res, err := pokeapi.GetArea(cfg)
+	res, err := pokeapi.GetArea(cfg, c)
 	if err != nil {
 		fmt.Printf("No more pages!")
 	}
@@ -46,7 +46,7 @@ func commandMapb(cfg *pokeapi.Config, c *pokecache.Cache) error {
 		fmt.Printf("You're on the first page")
 	}
 	cfg.Next = cfg.Previous
-	res, err := pokeapi.GetArea(cfg)
+	res, err := pokeapi.GetArea(cfg, c)
 	if err != nil {
 		fmt.Printf("No more pages!")
 	}

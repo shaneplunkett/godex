@@ -3,6 +3,7 @@ package pokeapi
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/shaneplunkett/godex/internal/pokecache"
 	"io"
 	"net/http"
 )
@@ -30,10 +31,22 @@ func toPtr(str string) *string {
 	return &str
 }
 
-func GetArea(cfg *Config) (*LocationArea, error) {
+func GetArea(cfg *Config, c *pokecache.Cache) (*LocationArea, error) {
 	if cfg.Next == nil {
 		return nil, fmt.Errorf("No Next URL")
 	}
+
+	//cache check logic
+	val, ok := c.Get(*cfg.Next)
+	if ok {
+		var response LocationArea
+		err := json.Unmarshal(val, &response)
+		if err != nil {
+			return &response, nil
+		}
+	}
+
+	// none cache logic
 	req, err := http.Get(*cfg.Next)
 	if err != nil {
 		return nil, err
@@ -44,6 +57,8 @@ func GetArea(cfg *Config) (*LocationArea, error) {
 	if err != nil {
 		return nil, err
 	}
+	// Add to cache
+	c.Add(*cfg.Next, data)
 
 	var response LocationArea
 	if err = json.Unmarshal(data, &response); err != nil {
