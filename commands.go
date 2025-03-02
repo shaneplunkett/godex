@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/shaneplunkett/godex/internal/pokecache"
 	"github.com/shaneplunkett/godex/pokeapi"
 	"os"
 )
@@ -9,16 +10,16 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(cfg *pokeapi.Config) error
+	callback    func(cfg *pokeapi.Config, c *pokecache.Cache) error
 }
 
-func commandExit(cfg *pokeapi.Config) error {
+func commandExit(cfg *pokeapi.Config, c *pokecache.Cache) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
 
-func commandHelp(cfg *pokeapi.Config) error {
+func commandHelp(cfg *pokeapi.Config, c *pokecache.Cache) error {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")
 	fmt.Println()
@@ -28,7 +29,7 @@ func commandHelp(cfg *pokeapi.Config) error {
 	return nil
 }
 
-func commandMap(cfg *pokeapi.Config) error {
+func commandMap(cfg *pokeapi.Config, c *pokecache.Cache) error {
 	res, err := pokeapi.GetArea(cfg)
 	if err != nil {
 		fmt.Printf("No more pages!")
@@ -40,7 +41,7 @@ func commandMap(cfg *pokeapi.Config) error {
 
 }
 
-func commandMapb(cfg *pokeapi.Config) error {
+func commandMapb(cfg *pokeapi.Config, c *pokecache.Cache) error {
 	if cfg.Previous == nil {
 		fmt.Printf("You're on the first page")
 	}
