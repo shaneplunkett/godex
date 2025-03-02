@@ -17,7 +17,7 @@ func cleanInput(text string) []string {
 func main() {
 	commands := createCommands()
 	cfg := pokeapi.CreateConfig()
-	cache := pokecache.NewCache(5 * time.Millisecond)
+	cache := pokecache.NewCache(10 * time.Second)
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
