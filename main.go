@@ -22,14 +22,19 @@ func main() {
 	for {
 		fmt.Print("Pokedex > ")
 		if !scanner.Scan() {
+			fmt.Println("Oops! Error has Occured")
 
 		}
 		text := scanner.Text()
-		cleaned := strings.Fields(strings.ToLower(text))
+		cleaned := cleanInput(text)
+		param := ""
+		if len(cleaned) > 1 {
+			param = cleaned[1]
+		}
 		commandName := cleaned[0]
 		command, exists := commands[commandName]
 		if exists {
-			err := command.callback(cfg, cache)
+			err := command.callback(cfg, cache, param)
 			if err != nil {
 				fmt.Println("Error running command:", err)
 			}
