@@ -19,6 +19,7 @@ func main() {
 	cfg := pokeapi.CreateConfig()
 	cache := pokecache.NewCache(10 * time.Second)
 	scanner := bufio.NewScanner(os.Stdin)
+	caught := pokeapi.CreateCaught()
 	for {
 		fmt.Print("Pokedex > ")
 		if !scanner.Scan() {
@@ -34,7 +35,7 @@ func main() {
 		commandName := cleaned[0]
 		command, exists := commands[commandName]
 		if exists {
-			err := command.callback(cfg, cache, param)
+			err := command.callback(cfg, cache, param, caught)
 			if err != nil {
 				fmt.Println("Error running command:", err)
 			}

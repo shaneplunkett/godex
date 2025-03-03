@@ -18,6 +18,11 @@ type LocationArea struct {
 	} `json:"results"`
 }
 
+func CreateCaught() *map[int]string {
+	caught := make(map[int]string)
+	return &caught
+}
+
 type LocationAreaId struct {
 	EncounterMethodRates []struct {
 		EncounterMethod struct {
