@@ -92,6 +92,28 @@ func commandCatch(cfg *pokeapi.Config, c *pokecache.Cache, p string) error {
 	return nil
 }
 
+func commandInspect(cfg *pokeapi.Config, c *pokecache.Cache, p string) error {
+	res, err := pokeapi.GetPokemon(cfg, c, p)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("Name: %v\n", res.Name)
+	fmt.Printf("Height: %v\n", res.Height)
+	fmt.Printf("Weight: %v\n", res.Weight)
+	fmt.Printf("Stats:\n")
+
+	for _, stat := range res.Stats {
+		fmt.Printf("    - %v: %v\n", stat.Stat.Name, stat.BaseStat)
+	}
+
+	fmt.Printf("Types:\n")
+	for _, t := range res.Types {
+		fmt.Printf("    - %v\n", t.Type.Name)
+	}
+
+	return nil
+}
+
 func createCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"exit": {
@@ -123,6 +145,11 @@ func createCommands() map[string]cliCommand {
 			name:        "catch <pokemon>",
 			description: "Attempt to Catch a Pokemon",
 			callback:    commandCatch,
+		},
+		"inspect": {
+			name:        "inspect <pokemon>",
+			description: "Get information on a pokemon",
+			callback:    commandInspect,
 		},
 	}
 }
