@@ -45,7 +45,7 @@ func commandMap(cfg *pokeapi.Config, c *pokecache.Cache, p string, ct *map[int]s
 
 func commandMapb(cfg *pokeapi.Config, c *pokecache.Cache, p string, ct *map[int]string) error {
 	if cfg.Previous == nil {
-		fmt.Printf("You're on the first page")
+		return fmt.Errorf("You're on the first page")
 	}
 	cfg.Next = cfg.Previous
 	res, err := pokeapi.GetArea(cfg, c)
@@ -61,7 +61,7 @@ func commandMapb(cfg *pokeapi.Config, c *pokecache.Cache, p string, ct *map[int]
 func commandExplore(cfg *pokeapi.Config, c *pokecache.Cache, p string, ct *map[int]string) error {
 	res, err := pokeapi.GetAreaId(cfg, c, p)
 	if err != nil {
-		fmt.Printf("Oops Please Try Again!")
+		return fmt.Errorf("Oops Please Try Again!\n")
 	}
 	fmt.Printf("Exploring: %v\n", p)
 	fmt.Printf("Found Pokemon:\n")
